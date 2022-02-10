@@ -2,7 +2,7 @@ pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "./interface/ICryptoDevs.sol";
+import "./interface/ICryptoDevsNFT.sol";
 
 contract CryptoDevToken is ERC20, Ownable {
 
@@ -12,13 +12,13 @@ contract CryptoDevToken is ERC20, Ownable {
     // the max total supply is 10000 for Crypto Dev Tokens
     uint256 public constant maxTotalSupply = 10000 * 10**18;
 
-    ICryptoDevs CryptoDevsNFT;
+    ICryptoDevsNFT CryptoDevsNFT;
     // Mapping to keep track of which tokenIds have been claimed
     mapping(uint256 => bool) public tokenIdsClaimed;
     // Function to receive Ether. msg.data must be empty
 
     constructor(address _cryptoDevsContract) ERC20("Crypto Dev Token", "CD") {
-        CryptoDevsNFT = ICryptoDevs(_cryptoDevsContract);
+        CryptoDevsNFT = ICryptoDevsNFT(_cryptoDevsContract);
     }
 
     /**
