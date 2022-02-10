@@ -1,6 +1,6 @@
 require("@nomiclabs/hardhat-waffle");
 require("@nomiclabs/hardhat-etherscan");
-require("dotenv").config({ path: "hardhat-tutorial.env" });
+require("dotenv").config({ path: "./hardhat-tutorial/hardhat-tutorial.env" });
 
 const RINKEBY_API_KEY_URL = process.env.RINKEBY_API_KEY_URL;
 const RINKEBY_PRIVATE_KEY = process.env.RINKEBY_PRIVATE_KEY;
