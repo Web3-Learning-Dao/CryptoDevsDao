@@ -1,5 +1,6 @@
 require("@nomiclabs/hardhat-waffle");
 require("@nomiclabs/hardhat-etherscan");
+require("@nomiclabs/hardhat-web3");
 require("dotenv").config({ path: "./hardhat-tutorial/hardhat-tutorial.env" });
 
 const RINKEBY_API_KEY_URL = process.env.RINKEBY_API_KEY_URL;
@@ -27,8 +28,22 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
  * @type import('hardhat/config').HardhatUserConfig
  */
  module.exports = {
-  solidity: "0.8.4",
+  solidity: {
+    version:"0.8.4",
+    settings: {
+      optimizer: {
+        enabled: true,
+        runs: 1000
+      }
+    }
+  },
   networks: {
+    hardhat:{
+      forking: {
+        url: "https://eth-mainnet.alchemyapi.io/v2/<key>" ,//分叉主网，总是进行
+        blockNumber: 1095000 //用于锁定区块号，提高测试稳定性和速度
+      }
+    },
     rinkeby:{
       url: RINKEBY_API_KEY_URL,
       accounts: [RINKEBY_PRIVATE_KEY],
