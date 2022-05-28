@@ -36,11 +36,10 @@ contract Greeter {
         uint256 randomValue = 53033043951559633677511288179104004159099988387811303723152374354372773517071;
         //uint256[] memory expandedValues = new uint256[](num);
         uint256[] memory expandedValues = expand(randomValue,num);
-        uint256 akfhk = expandedValues[0];
         for(uint i = 0;i < expandedValues.length;i++){
               WhilteList.push(msg.sender);
         }
-    
+        console.log("hahdkahkdhaksdhkasdadaskjdhjsadhkasdj");
         return WhilteList;
     }
 
