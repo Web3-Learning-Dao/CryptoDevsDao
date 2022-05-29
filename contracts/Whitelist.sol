@@ -4,8 +4,10 @@ pragma solidity ^0.8.0;
 import "hardhat/console.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@chainlink/contracts/src/v0.8/VRFConsumerBase.sol";
+import '@openzeppelin/contracts/access/AccessControlEnumerable.sol';
+import {Errors} from './libraries/Errors.sol';
 
-contract Whitelist is Ownable,VRFConsumerBase{
+contract Whitelist is Ownable,VRFConsumerBase,AccessControlEnumerable{
 
     uint256 totalWave;
     uint256 private seed;
@@ -54,6 +56,11 @@ contract Whitelist is Ownable,VRFConsumerBase{
     bytes32 internal keyHash;
     uint256 internal fee;
 
+    /// @dev keccak256('INVITER_ROLE')
+    bytes32 public constant INVITER_ROLE =
+        0x639cc15674e3ab889ef8ffacb1499d6c868345f7a98e2158a7d43d23a757f8e0;
+
+
     modifier onlyWhenNotPaused {
         require(!_paused, "Contract currently paused");
         _;
@@ -73,6 +80,9 @@ contract Whitelist is Ownable,VRFConsumerBase{
         ){
         maxWhitelistedAddresses =  _maxWhitelistedAddresses;
         console.log("maxWhitelistedAddresses [%d]!",maxWhitelistedAddresses);
+
+        _grantRole(INVITER_ROLE, _msgSender());
+
         /*
             init seed 
         */
@@ -210,6 +220,18 @@ contract Whitelist is Ownable,VRFConsumerBase{
             whitelistedAddresses[WhilteListAddress] = true;
         }
         return WhilteList;
+    }
+
+    //use merkle for whitelist
+    bytes32 private _merkleTreeRoot;
+
+    /**
+     * @dev update whitelist by a back-end server bot
+     */
+    function updateWhitelist(bytes32 merkleTreeRoot_) public {
+        if (!hasRole(INVITER_ROLE, _msgSender())) revert Errors.NotInviter();
+
+        _merkleTreeRoot = merkleTreeRoot_;
     }
 
 }

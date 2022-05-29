@@ -3,6 +3,11 @@ pragma solidity ^0.8.0;
 
 library DataTypes {
 
+    // Basic token settings
+    struct BaseToken {
+        string name;
+        string symbol;
+    }
 
     // DAO's shareholding setting
     // @notice: [0:100] is the range of the percentage of the total supply
@@ -48,8 +53,8 @@ library DataTypes {
     // DAO Global Settings Entry
     struct DAOSettings {
         uint256 timelockDelay;
-        CryptoDevsTokenSettings share;
-        CryptoDevsNFTSettings membership;
+        CryptoDevsTokenSettings cryptoDevsToken;
+        CryptoDevsNFTSettings cryptoDevsNFT;
         InvestmentSettings investment;
     }
 
