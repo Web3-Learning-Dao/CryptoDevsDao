@@ -29,22 +29,18 @@ contract CryptoDevsNFT is
     using Counters for Counters.Counter;
     using Strings for uint256;
     Counters.Counter private _tokenIdsforNFT;
-
-    bytes32 private _merkleTreeRoot;
-
+    
     // boolean to keep track of when presale started
     bool public presaleStarted;
-
     // timestamp for even presale would end
     uint256 public presaleEnded;
-
-    string _baseTokenURI;
-
-    uint256 public maxTokenIds = 20;
-
+    uint256 _presaleTime = 1 days;
+    
+    uint256 public maxTokenIds = 10000;
     //  _price is the price of one Crypto Dev NFT
     uint256 public _price = 0.01 ether;
 
+    string _baseTokenURI;
     mapping(uint256 => string) private _decentralizedStorage;
     mapping(uint256 => bool) private _isInvestor;
 
@@ -73,23 +69,34 @@ contract CryptoDevsNFT is
     /**
     * @dev startPresale starts a presale for the whitelisted addresses
     */
-    function startPresale() public onlyOwner {
+    function startPresale() external onlyRole(DEFAULT_ADMIN_ROLE) {
         presaleStarted = true;
         // Set presaleEnded time as current timestamp + 5 minutes
         // Solidity has cool syntax for timestamps (seconds, minutes, hours, days, years)
-        presaleEnded = block.timestamp + 5 minutes;
+        presaleEnded = block.timestamp + _presaleTime;
+    }
+
+    function setMintPrice(uint256 price) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        _price = price;
+    }
+
+    function getMintPrice() external view returns (uint256){
+        return _price;
+    }
+
+    function setPresaleTime(uint256 persalTime) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        _presaleTime = persalTime;
     }
 
     /**
     * @dev Self-mint for white-listed members
     */
-    function mint() public payable  {
+    function whiteListemint() public payable  {
         if (balanceOf(_msgSender()) > 0) revert Errors.MembershipAlreadyClaimed();
         uint256 tokenId = _tokenIdsforNFT.current();
-        require(presaleStarted && block.timestamp < presaleEnded, "Presale is not running");
        // require(whitelist.whitelistedAddresses(msg.sender), "You are not whitelisted");
         require(tokenId < maxTokenIds, "Exceeded maximum Cypto Devs supply");
-        require(msg.value >= _price, "Ether sent is not correct");
+        //require(msg.value >= _price, "Ether sent is not correct");
         _mint(_msgSender(), tokenId);
         _tokenIdsforNFT.increment();
         
@@ -98,13 +105,13 @@ contract CryptoDevsNFT is
     /**
       * @dev Self-mint for pubilc members
       */
-    function publicMint() public payable  {
+    function publicMint() external payable  {
         if (balanceOf(_msgSender()) > 0) revert Errors.MembershipAlreadyClaimed();
         uint256 tokenId = _tokenIdsforNFT.current();
         require(presaleStarted && block.timestamp >=  presaleEnded, "Presale has not ended yet");
         require(tokenId < maxTokenIds, "Exceed maximum Cypto Devs supply");
         require(msg.value >= _price, "Ether sent is not correct");
-          // tokenId start with 0
+        // tokenId start with 0
         _mint(_msgSender(), tokenId);
         _tokenIdsforNFT.increment();
     }

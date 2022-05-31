@@ -35,8 +35,6 @@ contract CryptoDevsEntrance is Context, AccessControlEnumerable,Pausable,Multica
 
     DataTypes.DAOSettings private _initialSettings;
 
-    mapping(uint256 => bool) private _isInvestor;
-
     constructor(
         DataTypes.BaseToken memory cryptoDevsTokenBase,
         DataTypes.BaseToken memory cryptoDevsNFTBase,
@@ -99,13 +97,6 @@ contract CryptoDevsEntrance is Context, AccessControlEnumerable,Pausable,Multica
             settings: settings.cryptoDevsToken.governor
         });
 
-    }
-
-    /**
-     * @dev Returns if a tokenId is marked as investor
-     */
-    function isInvestor(uint256 tokenId) public view returns (bool) {
-        return _isInvestor[tokenId];
     }
 
     /**
