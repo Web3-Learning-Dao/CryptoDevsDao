@@ -1,4 +1,4 @@
-# CryDevsDAO
+# CryptoDevsDAO
 > CryDevsDAO是一个可以应用于公司，组织，董事会的基础治理设施，基于NFT来对DAO成员进行描述，分类包括：投资人NFT，贡献者NFT，普通成员NFT。并且由国库对所有资产进行管理，由州长投票模式对不同身份的NFT行驶投票权利。
 
 # 核心概念
