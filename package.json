@@ -16,6 +16,9 @@
     "@chainlink/contracts": "^0.3.1",
     "@openzeppelin/contracts": "^4.5.0",
     "dotenv": "^16.0.0",
-    "truffle-plugin-verify": "^0.5.20"
+    "truffle-plugin-verify": "^0.5.20",
+    "keccak256": "^1.0.6",
+    "merkletreejs": "^0.2.30",
+    "hardhat-deploy": "^0.11.2"
   }
 }

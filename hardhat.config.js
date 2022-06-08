@@ -1,7 +1,9 @@
 require("@nomiclabs/hardhat-waffle");
 require("@nomiclabs/hardhat-etherscan");
-require("@nomiclabs/hardhat-web3");
+require('@nomiclabs/hardhat-ethers');
 require("dotenv").config({ path: "./hardhat-tutorial/hardhat-tutorial.env" });
+
+require('hardhat-deploy');
 
 const RINKEBY_API_KEY_URL = process.env.RINKEBY_API_KEY_URL;
 const RINKEBY_PRIVATE_KEY = process.env.RINKEBY_PRIVATE_KEY;
@@ -34,9 +36,21 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
       optimizer: {
         enabled: true,
         runs: 1000
-      }
-    }
+      },
+    },
   },
+
+  // Named accounts for plugin `hardhat-deploy`
+  namedAccounts: {
+    deployer: 0,
+    tokenOwner: 1,
+  },
+
+  // Rewrite the `./test` folder to `./tests`
+  paths: {
+    tests: './tests',
+  },
+
   networks: {
     hardhat:{
       forking: {
