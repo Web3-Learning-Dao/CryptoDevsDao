@@ -96,7 +96,7 @@ contract CryptoDevsNFT is
         uint256 tokenId = _tokenIdsforNFT.current();
        // require(whitelist.whitelistedAddresses(msg.sender), "You are not whitelisted");
         require(tokenId < maxTokenIds, "Exceeded maximum Cypto Devs supply");
-        if(!IWhitelist(whitelistContract).checkMerkleTreeRootForWhitelist(proof)) revert Errors.NOtWhitelists();
+        if(!IWhitelist(whitelistContract).checkMerkleTreeRootForWhitelist(proof,_msgSender())) revert Errors.NOtWhitelists();
         //require(msg.value >= _price, "Ether sent is not correct");
         _mint(_msgSender(), tokenId);
         _tokenIdsforNFT.increment();
