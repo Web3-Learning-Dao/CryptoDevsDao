@@ -10,7 +10,7 @@ module.exports.testArgs = function (){
         },
         {
             name: 'CryptoDevsNFT',
-            symbol: 'CDN',
+            symbol: 'CDNFT',
         },
         {
             /// @dev for testing purposes only
@@ -49,6 +49,9 @@ module.exports.testArgs = function (){
                 investInERC20: [],
                 investThresholdInERC20: [],
                 investRatioInERC20: [],
+              },
+              whitelist:{
+                maxWhitelistNum: 100,
               },
         },
     ];
