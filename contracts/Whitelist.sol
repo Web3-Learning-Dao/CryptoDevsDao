@@ -155,9 +155,9 @@ contract Whitelist is Ownable,VRFConsumerBase,AccessControlEnumerable,Pausable{
         _merkleTreeRoot = merkleTreeRoot_;
     }
 
-    function checkMerkleTreeRootForWhitelist(bytes32[] calldata proof) external view returns (bool){
+    function checkMerkleTreeRootForWhitelist(bytes32[] calldata proof,address leaf) external view returns (bool){
        
-        if (!MerkleProof.verify(proof, _merkleTreeRoot, keccak256(abi.encodePacked(_msgSender()))))
+        if (!MerkleProof.verify(proof, _merkleTreeRoot, keccak256(abi.encodePacked(leaf))))
             return false;
         else
             return true;

@@ -50,6 +50,8 @@ describe("whitelist contract", function() {
           await this.Whitelist.connect(await ethers.getSigner(this.ownerAddress)).updateWhitelist(this.rootHash);
           const checkWhitelistReturn = await this.Whitelist.connect(await ethers.getSigner(this.accounts[0])).checkMerkleTreeRootForWhitelist(this.proofs[1]);
           expect(checkWhitelistReturn).to.equal(true);
+          const checkWhitelistReturn1 = await this.Whitelist.connect(await ethers.getSigner(this.ownerAddress)).checkMerkleTreeRootForWhitelist(this.proofs[0]);
+          expect(checkWhitelistReturn1).to.equal(true);
         });
       });
 });

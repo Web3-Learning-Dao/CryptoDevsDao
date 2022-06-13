@@ -12,7 +12,7 @@ interface IWhitelist {
 
     function updateWhitelist(bytes32 merkleTreeRoot_) external; 
 
-    function checkMerkleTreeRootForWhitelist(bytes32[] calldata proof) external view returns (bool);
+    function checkMerkleTreeRootForWhitelist(bytes32[] calldata proof, address leaf) external view returns (bool);
 
     function getALLWhiteListNum() external view returns (uint256);
     
