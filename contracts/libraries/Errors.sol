@@ -27,7 +27,8 @@ library Errors {
     error NotEnoughETH();
     error InvalidTokenAmounts();
     error NotEnoughTokens();
-
+    error NOtWhitelists(); 
+    
     string internal constant ERC721METADATA_NONEXIST_TOKEN =
         'ERC721Metadata: URI query for nonexistent token';
 

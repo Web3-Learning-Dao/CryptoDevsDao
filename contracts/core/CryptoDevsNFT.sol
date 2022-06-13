@@ -15,7 +15,7 @@ import "hardhat/console.sol";
 import {Base64} from "@openzeppelin/contracts/utils/Base64.sol";
 import {Errors} from "../libraries/Errors.sol";
 import {Events} from "../libraries/Events.sol";
-import "../interface/IWhitelist.sol";
+import {IWhitelist} from "../interface/IWhitelist.sol";
 
 contract CryptoDevsNFT is     
     Context,
@@ -91,21 +91,22 @@ contract CryptoDevsNFT is
     /**
     * @dev Self-mint for white-listed members
     */
-    function whiteListemint() public payable  {
+    function whiteListeMint(address whitelistContract ,bytes32[] calldata proof) public payable returns (uint256) {
         if (balanceOf(_msgSender()) > 0) revert Errors.MembershipAlreadyClaimed();
         uint256 tokenId = _tokenIdsforNFT.current();
        // require(whitelist.whitelistedAddresses(msg.sender), "You are not whitelisted");
         require(tokenId < maxTokenIds, "Exceeded maximum Cypto Devs supply");
+        if(!IWhitelist(whitelistContract).checkMerkleTreeRootForWhitelist(proof)) revert Errors.NOtWhitelists();
         //require(msg.value >= _price, "Ether sent is not correct");
         _mint(_msgSender(), tokenId);
         _tokenIdsforNFT.increment();
-        
+        return tokenId; 
     }
 
     /**
       * @dev Self-mint for pubilc members
       */
-    function publicMint() external payable  {
+    function publicMint() public payable  returns (uint256){
         if (balanceOf(_msgSender()) > 0) revert Errors.MembershipAlreadyClaimed();
         uint256 tokenId = _tokenIdsforNFT.current();
         require(presaleStarted && block.timestamp >=  presaleEnded, "Presale has not ended yet");
@@ -114,6 +115,7 @@ contract CryptoDevsNFT is
         // tokenId start with 0
         _mint(_msgSender(), tokenId);
         _tokenIdsforNFT.increment();
+        return tokenId;
     }
 
     /**

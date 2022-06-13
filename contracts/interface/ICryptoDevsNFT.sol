@@ -21,5 +21,5 @@ interface ICryptoDevsNFT is IERC721, IERC721Enumerable{
     function getMintPrice() external returns (uint256);
     
     function setPresaleTime(uint256 persalTime) external;
-
+   
 }

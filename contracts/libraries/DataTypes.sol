@@ -9,6 +9,10 @@ library DataTypes {
         string symbol;
     }
 
+   struct WhitelistSettings{
+       uint8 maxWhitelistNum;
+    }
+
     // DAO's shareholding setting
     // @notice: [0:100] is the range of the percentage of the total supply
     struct ShareSplit {
@@ -56,6 +60,7 @@ library DataTypes {
         CryptoDevsTokenSettings cryptoDevsToken;
         CryptoDevsNFTSettings cryptoDevsNFT;
         InvestmentSettings investment;
+        WhitelistSettings whitelist;
     }
 
 }

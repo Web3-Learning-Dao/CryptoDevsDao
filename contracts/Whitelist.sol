@@ -39,17 +39,18 @@ contract Whitelist is Ownable,VRFConsumerBase,AccessControlEnumerable,Pausable{
 
     WhitelistData public whitelistData;
     ChainLinkData private chainLinkData;
+
     // Setting the Max number of whitelisted addresses
     // User will put the value at the time of deployment
-    constructor(uint8 _maxWhitelistedAddresses) payable VRFConsumerBase(
+    constructor(uint8 _maxWhitelistedAddresses,address msgSender) payable VRFConsumerBase(
             0xb3dCcb4Cf7a26f6cf6B120Cf5A73875B7BBc655B, // VRF Coordinator
             0x01BE23585060835E02B77ef475b0Cc51aA1e0709  // LINK Token
         ){
         whitelistData.maxWhitelisteNumIssued =  _maxWhitelistedAddresses;
         console.log("maxWhitelistedAddresses [%d]!",whitelistData.maxWhitelisteNumIssued);
 
-        _grantRole(INVITER_ROLE, _msgSender());
-        _grantRole(PAUSER_ROLE, _msgSender());
+        _grantRole(INVITER_ROLE, msgSender);
+        _grantRole(PAUSER_ROLE,  msgSender);
         /*
             init seed 
         */
@@ -116,6 +117,10 @@ contract Whitelist is Ownable,VRFConsumerBase,AccessControlEnumerable,Pausable{
         return whitelistData.NumTowhitelistedAddresses;
     }
 
+    function getALLWhiteListNum() external view returns (uint256) {
+        return whitelistData.numAddressesWhitelisted;
+    }
+
     /**
      * @dev - get whitelist num if the whitelistmaxnum more than the num ,Draw a lottery on the random number of the water machine
      * @param - num need whitelist num;
@@ -151,6 +156,7 @@ contract Whitelist is Ownable,VRFConsumerBase,AccessControlEnumerable,Pausable{
     }
 
     function checkMerkleTreeRootForWhitelist(bytes32[] calldata proof) external view returns (bool){
+       
         if (!MerkleProof.verify(proof, _merkleTreeRoot, keccak256(abi.encodePacked(_msgSender()))))
             return false;
         else

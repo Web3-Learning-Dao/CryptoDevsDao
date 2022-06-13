@@ -18,6 +18,8 @@ import {Constants} from './libraries/Constants.sol';
 import {Errors} from './libraries/Errors.sol';
 import {Events} from './libraries/Events.sol';
 
+import {Whitelist} from './Whitelist.sol';
+
 contract CryptoDevsEntrance is Context, AccessControlEnumerable,Pausable,Multicall {
     using Counters for Counters.Counter;
     using Strings for uint256;
@@ -27,8 +29,9 @@ contract CryptoDevsEntrance is Context, AccessControlEnumerable,Pausable,Multica
     TreasuryGovernor public immutable governorNFT;
     CryptoDevsToken public immutable cryptoDevsToken;
     CryptoDevsNFT public immutable cryptoDevsNFT;
-    TreasuryGovernor public GovernorToken;
-    
+    TreasuryGovernor public immutable governorToken;
+    Whitelist public  immutable whitelist;
+
     /// @dev keccak256('PAUSER_ROLE')
     bytes32 public constant PAUSER_ROLE =
         0x65d7a28e3265b37a6474929f336521b332c1681b933f6cb9f3376673440d862a;
@@ -41,6 +44,7 @@ contract CryptoDevsEntrance is Context, AccessControlEnumerable,Pausable,Multica
         DataTypes.DAOSettings memory settings
     ){
         _initialSettings = settings;
+
         _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
         _grantRole(PAUSER_ROLE, _msgSender());
     
@@ -90,12 +94,14 @@ contract CryptoDevsEntrance is Context, AccessControlEnumerable,Pausable,Multica
         });
 
         // Create DAO's token Governance
-        GovernorToken = new TreasuryGovernor({
+        governorToken = new TreasuryGovernor({
             name: string(abi.encodePacked(cryptoDevsTokenBase.name, Constants.TOKEN_GOVERNOR_SUFFIX)),
             token: cryptoDevsToken,
             treasury: treasury,
             settings: settings.cryptoDevsToken.governor
         });
+
+        whitelist = new Whitelist(settings.whitelist.maxWhitelistNum,_msgSender());
 
     }
 
@@ -112,7 +118,7 @@ contract CryptoDevsEntrance is Context, AccessControlEnumerable,Pausable,Multica
         // Setup governor roles
         // Both membership and share governance have PROPOSER_ROLE by default
         treasury.grantRole(PROPOSER_ROLE, address(governorNFT));
-        treasury.grantRole(PROPOSER_ROLE, address(GovernorToken));
+        treasury.grantRole(PROPOSER_ROLE, address(governorToken));
 
         // Mint initial tokens to the treasury
         if (_initialSettings.cryptoDevsToken.initialSupply > 0) {
@@ -158,5 +164,8 @@ contract CryptoDevsEntrance is Context, AccessControlEnumerable,Pausable,Multica
         _unpause();
     }
 
-
+    function updateWhitelistAddress(bytes32 merkleTreeRoot_) external onlyRole(DEFAULT_ADMIN_ROLE){
+        whitelist.updateWhitelist(merkleTreeRoot_);
+    }
+    
 }
