@@ -8,7 +8,7 @@ describe('Treasury', function () {
   });
 
   beforeEach(async function () {
-    await contractsReady(this, true)();
+    await contractsReady(this, false)();
   });
 
   describe('deployment check', function () {

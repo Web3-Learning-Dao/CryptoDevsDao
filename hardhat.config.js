@@ -4,6 +4,7 @@ require('@nomiclabs/hardhat-ethers');
 require("dotenv").config({ path: "./hardhat-tutorial/hardhat-tutorial.env" });
 require('hardhat-deploy');
 const {HardhatUserConfig} = require('hardhat/types');
+const {node_url, accounts} = require('./utils/configs.js');
 
 const RINKEBY_API_KEY_URL = process.env.RINKEBY_API_KEY_URL;
 const RINKEBY_PRIVATE_KEY = process.env.RINKEBY_PRIVATE_KEY;
@@ -63,12 +64,12 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
       }
     },
     rinkeby:{
-      url: RINKEBY_API_KEY_URL,
-      accounts: [RINKEBY_PRIVATE_KEY],
+      url: node_url('rinkeby'),
+      accounts: accounts('rinkeby'),
     },
     ropsten:{
-      url: ROPSTEN_API_KEY_URL,
-      accounts: [ROPSTEN_PRIVATE_KEY],
+      url: node_url('ropsten'),
+      accounts: accounts('rinkeby'),
     },
     localhost: {
       url: 'http://localhost:8545',
