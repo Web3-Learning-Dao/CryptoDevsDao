@@ -54,7 +54,7 @@ contract CryptoDevsNFT is
 
     // We need to pass the name of our NFTs token and its symbol.
     constructor(string memory baseURI,string memory nftName,string memory symbol) 
-    ERC721(nftName, symbol)
+    ERC721S(nftName, symbol)
     EIP712(nftName,'1')
     {
         console.log("This is my NFT contract. Woah!");
@@ -87,6 +87,12 @@ contract CryptoDevsNFT is
     function setPresaleTime(uint256 persalTime) external onlyRole(DEFAULT_ADMIN_ROLE) {
         _presaleTime = persalTime;
     }
+
+    function getSoulPower(address owner) public view returns (uint32) {
+        return super._getSoulPower(owner);
+    }
+    
+    function setSoulPower() public 
 
     /**
     * @dev Self-mint for white-listed members
