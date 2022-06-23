@@ -12,6 +12,7 @@ CryptoDevsDao核心代码是使用`openzeppelin`合约库进行开发，提供�
 * `Pausable`实现了合约由授权账户触发的紧急停止机制，保障合约安全
 * `ERC20/ERC721 Votes`扩展 ERC20/ERC721 以支持由Token生成的投票和委托
 * `Governor` 提供了投票治理的逻辑功能实现，包括从Token中获取投票权重，实现简单的投票和提案机制，提供了时间锁功能
+* `IERC721S`基于ERC721实现的不可交易的NFT，作为个人身份象征，并且支持携带额外信息。支持ERC721S需要重写openzeppelin中的ERC721合约，或者可以自己重新实现ERC721协议。
 
 > ## core
 >核心代码，实现了NFT/token，国库和州长治理合约逻辑
@@ -43,3 +44,5 @@ CryptoDevsDao核心代码是使用`openzeppelin`合约库进行开发，提供�
 # 后期规划 
 实现module合约，支持导入和销毁新增功能业务合约，并且支持是否交给国库管理。
 
+# 感谢
+此项目的产品灵感，和实现方案参考了@guo-yu @AmazingAng,感谢！
